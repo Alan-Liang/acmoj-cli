@@ -1,0 +1,16 @@
+{
+  "name": "acmoj",
+  "version": "0.1.0",
+  "description": "A CLI for the ACM class online judge",
+  "main": "src/index.js",
+  "repository": "https://github.com/Alan-Liang/acmoj-cli",
+  "author": "Alan-Liang",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "colorette": "^2.0.16",
+    "conf": "^10.1.0",
+    "enquirer": "^2.3.6",
+    "node-fetch": "2",
+    "yargs": "^17.2.1"
+  }
+}
