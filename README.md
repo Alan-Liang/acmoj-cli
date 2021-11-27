@@ -8,7 +8,7 @@ This is a simple script to help you submit code to ACM Class Online Judge right 
 
 ```bash
 sudo apt install nodejs # if you haven't yet
-sudo npm install -g acmoj
+sudo npm i acmoj -g
 ```
 
 [node]: https://nodejs.org/
