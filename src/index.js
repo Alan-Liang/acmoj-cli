@@ -42,6 +42,7 @@ const yargs = require('yargs/yargs')(process.argv.slice(2))
   })
   .alias('v', 'version')
   .alias('h', 'help')
+  .completion('completion')
   .help()
 
 const args = yargs.argv
@@ -88,9 +89,9 @@ class NotAuthenticated extends Error {}
 const tryLogIn = async (username, password) => {
   const res = await fetchApi('login', { body: new URLSearchParams({ username, password, next: '/' }), method: 'POST' })
   if (res.status !== 200) throw new Error(`network error: login request responded with status ${res.status}.`)
-  const resText = await res.text()
-  if (resText === '-1') throw new WrongCredentials()
-  if (resText === '0') config.set('loginId', res.headers.get('set-cookie').split(';')[0])
+  const resText = await res.json()
+  if (resText.e === -10) throw new WrongCredentials()
+  if (resText.e === 0) config.set('loginId', res.headers.get('set-cookie').split(';')[0])
   else throw new Error(`network error: login request responded with unknown response: ${resText}`)
 }
 const relogin = async () => {
@@ -127,7 +128,7 @@ const getRepoUrl = () => {
   const cwd = gitPath()
   const { stdout, stderr, status } = spawnSync('git', [ 'remote', 'get-url', 'origin' ], { cwd })
   if (status !== 0) throw new Error(`error from git: ${stderr.toString()}`)
-  return stdout.toString().trim().replace(/^git@([^:]+)[:/]/i, 'https://$1/').replace(/^https?:\/\/github.com\//i, 'https://hub.fastgit.org/')
+  return stdout.toString().trim().replace(/^git@([^:]+)[:/]/i, 'https://$1/')
 }
 
 const ensureLoggedInUi = async () => {
